@@ -206,18 +206,29 @@ def image_Message(number,image_uri):
     link = url_for('serve_generated_image', filename=image_uri, _external=True)
     print("linklinklinklinklink")
     print(link)
+    # data = json.dumps(
+    #     {
+    #         "messaging_product": "whatsapp",
+    #         "recipient_type": "individual",
+    #         "to": number,
+    #         "type": "image",
+    #         "image": {
+    #               "link": link
+    #         }
+    #     }
+    # )
     data = json.dumps(
         {
             "messaging_product": "whatsapp",
             "recipient_type": "individual",
             "to": number,
-            "type": "image",
-            "image": {
-                  "link": link
+            "context": { "message_id": messageId },
+            "type": "text",
+            "text": {
+                "body": link
             }
         }
     )
-    
     # https://botsimple.vercel.app/static/Image/image.jpg
     return data
 
