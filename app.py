@@ -5,13 +5,13 @@ app = Flask(__name__)
 
 GENERATED_FILES_FOLDER = 'generated_files'
 app.config['GENERATED_FILES_FOLDER'] = GENERATED_FILES_FOLDER
-app.config['SERVER_NAME'] = 'https://botsimple.vercel.app'
+app.config['SERVER_NAME'] = 'botsimple-carloss1998-lab.vercel.app'
 # app.config['SERVER_NAME'] = '127.0.0.1:5000'
 
 
 @app.route('/bienvenido', methods=['GET'])
 def  bienvenido():
-    return url_for('static', filename='Image/image.jpg')
+    return 'bonjour ici'
 
 @app.route('/webhook', methods=['GET'])
 def verificar_token():
