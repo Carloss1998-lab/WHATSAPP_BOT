@@ -2,7 +2,16 @@ import requests
 import sett
 import json
 import time
+import base64
+import io
+from PIL import Image
 
+def decode_and_show(image):
+    image_data = base64.b64decode(image.encode())
+    image = Image.open(io.BytesIO(image_data))
+    image.save("./image.jpg")
+    # display(image)
+    
 def obtener_Mensaje_whatsapp(message):
     if 'type' not in message :
         text = 'mensaje no reconocido'
@@ -59,6 +68,20 @@ def text_Message(number,text):
     )
     return data
 
+def text_Message(number,text):
+    data = json.dumps(
+            {
+                "messaging_product": "whatsapp",    
+                "recipient_type": "individual",
+                "to": number,
+                "type": "text",
+                "text": {
+                    "body": text
+                }
+            }
+    )
+    return data
+
 def buttonReply_Message(number, options, body, footer, sedd,messageId):
     buttons = []
     for i, option in enumerate(options):
@@ -97,6 +120,10 @@ def buttonReply_Message(number, options, body, footer, sedd,messageId):
 def listReply_Message(number, options, body, footer, sedd,messageId):
     rows = []
     for i, option in enumerate(options):
+        print("i")
+        print(i)
+        print(option)
+        
         rows.append(
             {
                 "id": sedd + "_row_" + str(i+1),
@@ -104,7 +131,8 @@ def listReply_Message(number, options, body, footer, sedd,messageId):
                 "description": ""
             }
         )
-
+    print("rows")
+    print(rows)
     data = json.dumps(
         {
             "messaging_product": "whatsapp",
@@ -163,6 +191,22 @@ def sticker_Message(number, sticker_id):
     )
     return data
 
+def image_Message(number, image_id):
+    data = json.dumps(
+        {
+            "messaging_product": "whatsapp",
+            "recipient_type": "individual",
+            "to": number,
+            "type": "image",
+            "image": {
+                "id": "image_id"  
+            }
+        }
+    )
+    return data
+
+
+
 def get_media_id(media_name , media_type):
     media_id = ""
     if media_type == "sticker":
@@ -220,12 +264,6 @@ def administrar_chatbot(text,number, messageId, name):
     list = []
     markRead = markRead_Message(messageId)
     list.append(markRead)
-    time.sleep(2)
-    
-    print("texttexttexttext")
-    print(text)
-    print("Tom" in text)
-    print("service" in text)
     if "hola" in text or "model" in text or "hello" in text or "bonjour" in text or "bonsoir" in text:
         body = "Bonjour! 👋 Veuillez choisi une option?"
         footer = "Reply Bot"
@@ -235,49 +273,57 @@ def administrar_chatbot(text,number, messageId, name):
         replyReaction = replyReaction_Message(number, messageId, "🫡")
         list.append(replyReaction)
         list.append(replyButtonData)
+    elif "servicios" in text:
+        body = "Tenemos varias áreas de consulta para elegir. ¿Cuál de estos servicios te gustaría explorar?"
+        footer = "Equipo Bigdateros"
+        options = ["Analítica Avanzada", "Migración Cloud", "Inteligencia de Negocio"]
+
+        listReplyData = listReply_Message(number, options, body, footer, "sed2",messageId)
+        sticker = sticker_Message(number, get_media_id("perro_traje", "sticker"))
+
+        list.append(listReplyData)
+        list.append(sticker)    
     elif "service" in text:
         body = "Voici nos services?"
         footer = "Reply Bot"
-        options = ["Generation de texte (Tom)", "Generation d'image (Jerry)"]
+        options = ["Generation de texte, Tom", "Generation d'image, Jerry","Bedrock, pas disponible"]
         
-        print("cooll")
-        listReplyData = listReply_Message(number, options, body, footer, "sed2",messageId)
+        listReplyData = listReply_Message(number, options, body, footer, "sed9",messageId)
         sticker = sticker_Message(number, get_media_id("perro_traje", "sticker"))
-        print("toppppppppppppppppppppp")
+
         list.append(listReplyData)
-        list.append(sticker)
-    elif "texte" in text:
+        list.append(sticker) 
+    elif "generation de texte" in text:
         body = "Bonjour. Je suis le robot Tom, que puis-je pour vous?"
         footer = "Reply Bot"
-        options = ["✅ Tom : Ecris une lettre de demande d'emploi."]
-        replyButtonData = buttonReply_Message(number, options, body, footer, "sed3",messageId)
-        list.append(replyButtonData)
-    elif "image" in text:
-        body = "Bonjour. Je suis le robot Jerry, que puis-je pour vous?"
+        options = ["Tom : c'est quoi la carte verte ?","Tom : C'est quoi la capital de la France."," Tom : C'est qui Emanuel Macron."]
+
+        listReplyData = listReply_Message(number, options, body, footer, "sed10",messageId)
+        sticker = sticker_Message(number, get_media_id("perro_traje", "sticker"))
+
+        list.append(listReplyData)
+        list.append(sticker)  
+    elif "generation d'image" in text:
+        body = "Bonjour. Je suis le robot Tom, que puis-je pour vous?"
         footer = "Reply Bot"
-        options = ["✅ Jerry : Draw a boys."]
+        options = ["Jerry : Draw a boys","Jerry : engineers eating lunch at the opera","Jerry : panda eating bamboo on a plane"]
 
-        replyButtonData = buttonReply_Message(number, options, body, footer, "sed4",messageId)
-        list.append(replyButtonData) 
+        listReplyData = listReply_Message(number, options, body, footer, "sed14",messageId)
+        sticker = sticker_Message(number, get_media_id("perro_traje", "sticker"))
+
+        list.append(listReplyData)
+        list.append(sticker) 
+           
     elif "tom" in text:
-        
-        print("allllllllllllllllllllllllllllllllllllll")
-        # L'URL de l'API que vous souhaitez interroger
         api_url = sett.model_api_url
-
         data = {
             "system": "you're a conversational agent, give quick and clear answers to any questions you may have. Answer in the same language as the question.",
-            "user": text
+            "user": text.replace("tom", "").replace(':',"")
         }
-        # Convertir le dictionnaire en JSON
         json_data = json.dumps(data)
-
-        # Entête (header) pour spécifier le type de contenu JSON
         headers = {
             "Content-Type": "application/json"
         }
-
-        # Effectuer la requête POST avec les données JSON
         response = requests.post(api_url, data=json_data, headers=headers)
         if response.status_code == 200:
             print(response.json())
@@ -285,7 +331,24 @@ def administrar_chatbot(text,number, messageId, name):
             list.append(data)
         else:
             data = text_Message(number,response.status_code)
-            list.append(data)                    
+            list.append(data)
+    elif "jerry" in text::
+        # L'URL de l'API Gateway
+        api_url =  stable_api_url
+        data = {
+            "prompt": text.replace("jerry", "").replace(':',"")
+        }
+        json_data = json.dumps(data)
+        headers = {
+            "Content-Type": "application/json"
+        }
+        try:
+            response = requests.post(api_url, data=json_data, headers=headers)
+            data = text_Message(number,"Veuillez commencer votre message par Tom : ou Jerry : pour designer le robot")
+            list.append(decode_and_show(response.text))
+        except requests.exceptions.RequestException as e:
+            # Gérer les erreurs de requête
+            print(f"Une erreur de requête s'est produite : {str(e)}")
     else :
         data = text_Message(number,"Veuillez commencer votre message par Tom : ou Jerry : pour designer le robot")
         list.append(data)

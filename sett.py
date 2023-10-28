@@ -5,6 +5,7 @@ whatsapp_token = 'EAAEpadzUgZCkBO7uqH0bnei4WKaHBuIpEAJByQlbGLjf5o71pPjZA7EqHHkc2
 whatsapp_url = 'https://graph.facebook.com/v17.0/156524200875526/messages'
 
 model_api_url = ' https://2zc9jbtfh0.execute-api.us-west-2.amazonaws.com/prod/'
+stable_api_url = "https://uv7cxyfns5.execute-api.eu-west-1.amazonaws.com/prod/"
 
 stickers = {
     "poyo_feliz": 984778742532668,

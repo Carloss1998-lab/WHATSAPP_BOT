@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/bienvenido', methods=['GET'])
 def  bienvenido():
-    return 'Hola mundo bigdateros, desde Flask'
+    return url_for('static', filename='/Image/image.jpg')
 
 @app.route('/webhook', methods=['GET'])
 def verificar_token():
@@ -20,7 +20,7 @@ def verificar_token():
             return 'token incorrecto', 403
     except Exception as e:
         return e,403
-    
+
 @app.route('/webhook', methods=['POST'])
 def recibir_mensajes():
     try:
