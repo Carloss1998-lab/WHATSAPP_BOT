@@ -370,11 +370,16 @@ def administrar_chatbot(text,number, messageId, name, path):
         data = {
             "prompt": text.replace("jerry", "").replace(':',"")
         }
+        print("okkk")
         json_data = json.dumps(data)
+        print("kllllllllllllllllll")
         headers = {
             "Content-Type": "application/json"
         }
+        print("data")
+        print(data)
         try:
+            print("checkkkkkkkkkkkkkkk")
             response = requests.post(api_url, data=json_data, headers=headers)
             print("toooooooooooooooooooooooooooo")
             data = text_Message(number,"Veuillez commencer votre message par Tom : ou Jerry : pour designer le bot")
