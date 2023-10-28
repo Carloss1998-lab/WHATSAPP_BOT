@@ -8,6 +8,10 @@ app.config['GENERATED_FILES_FOLDER'] = GENERATED_FILES_FOLDER
 app.config['SERVER_NAME'] = 'botsimple-carloss1998-lab.vercel.app'
 # app.config['SERVER_NAME'] = '127.0.0.1:5000'
 
+@app.route('/')
+def  home():
+    return 'Hello everyone'
+
 
 @app.route('/bienvenido', methods=['GET'])
 def  bienvenido():
