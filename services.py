@@ -286,7 +286,7 @@ def markRead_Message(messageId):
     )
     return data
 
-def administrar_chatbot(text,number, messageId, name, path, domain):
+def administrar_chatbot(text,number, messageId, name, path):
     print("administrar_chatbot pathhhhhhhhhhhhhhhh")
     print(path)
     text = text.lower() #mensaje que envio el usuario
@@ -365,6 +365,8 @@ def administrar_chatbot(text,number, messageId, name, path, domain):
     elif "jerry" in text:
         # L'URL de l'API Gateway
         api_url =  sett.stable_api_url
+        print("api_url")
+        print(api_url)
         data = {
             "prompt": text.replace("jerry", "").replace(':',"")
         }
@@ -374,9 +376,13 @@ def administrar_chatbot(text,number, messageId, name, path, domain):
         }
         try:
             response = requests.post(api_url, data=json_data, headers=headers)
+            print("toooooooooooooooooooooooooooo")
             data = text_Message(number,"Veuillez commencer votre message par Tom : ou Jerry : pour designer le bot")
+            print("aaaaaaaaaaaaaaaaaa")
             image_uri = decode_and_show(response.text, path)
+            print("bbbbbbbbbbbbbbbbbbbbbb")
             image = image_Message(number,image_uri)
+            print("ccccccccccccccccccccccc")
             list.append(image)
 
         except requests.exceptions.RequestException as e:

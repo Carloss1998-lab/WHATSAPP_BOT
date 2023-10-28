@@ -44,7 +44,7 @@ def recibir_mensajes():
         contacts = value['contacts'][0]
         name = contacts['profile']['name']
         text = services.obtener_Mensaje_whatsapp(message)
-        services.administrar_chatbot(text, number,messageId,name,app.config['GENERATED_FILES_FOLDER'],app.config['SERVER_NAME'])
+        services.administrar_chatbot(text, number,messageId,name,app.config['GENERATED_FILES_FOLDER'])
         return 'enviado'
 
     except Exception as e:
