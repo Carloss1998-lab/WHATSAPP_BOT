@@ -4,13 +4,23 @@ import json
 import time
 import base64
 import io
+import os
+from datetime import datetime 
 from PIL import Image
+from flask import  url_for
 
-def decode_and_show(image):
+
+def decode_and_show(image,path):
     image_data = base64.b64decode(image.encode())
     image = Image.open(io.BytesIO(image_data))
-    image.save(url_for('static', filename='Image/image.jpg'))
-    # display(image)
+    filename = f"generated_image_{datetime.now().strftime('%Y%m%d%H%M%S')}.png"
+    image_path = os.path.join(path, filename)
+    image.save(image_path)
+    image_url = f'/generated_files/{filename}'
+    print("image_url")
+    print(image_url)
+    return image_url
+
     
 def obtener_Mensaje_whatsapp(message):
     if 'type' not in message :
@@ -191,7 +201,11 @@ def sticker_Message(number, sticker_id):
     )
     return data
 
-def image_Message(number):
+def image_Message(number,image_uri):
+    
+    link = url_for('serve_generated_image', filename=image_uri, _external=True)
+    print("linklinklinklinklink")
+    print(link)
     data = json.dumps(
         {
             "messaging_product": "whatsapp",
@@ -199,10 +213,11 @@ def image_Message(number):
             "to": number,
             "type": "image",
             "image": {
-                  "link": 'https://botsimple.vercel.app/static/Image/image.jpg'
+                  "link": link
             }
         }
     )
+    
     # https://botsimple.vercel.app/static/Image/image.jpg
     return data
 
@@ -260,7 +275,9 @@ def markRead_Message(messageId):
     )
     return data
 
-def administrar_chatbot(text,number, messageId, name):
+def administrar_chatbot(text,number, messageId, name, path, domain):
+    print("administrar_chatbot pathhhhhhhhhhhhhhhh")
+    print(path)
     text = text.lower() #mensaje que envio el usuario
     list = []
     markRead = markRead_Message(messageId)
@@ -296,7 +313,7 @@ def administrar_chatbot(text,number, messageId, name):
         list.append(sticker) 
     elif "generation de texte" in text:
         print("allllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
-        body = "Bonjour. Je suis le robot Tom, que puis-je pour vous?"
+        body = "Bonjour. Je suis le bot Tom, que puis-je pour vous?"
         footer = "Reply Bot"
         options = ["Tom, what's a green card","Tom, capital France","Tom, What is AI"]
 
@@ -306,7 +323,7 @@ def administrar_chatbot(text,number, messageId, name):
         list.append(listReplyData)
         list.append(sticker)  
     elif "generation d'image" in text:
-        body = "Bonjour. Je suis le robot Tom, que puis-je pour vous?"
+        body = "Bonjour. Je suis le bot Jerry, que puis-je pour vous?"
         footer = "Reply Bot"
         options = ["Jerry, Draw a boys","Jerry, a computer","Jerry, panda eating"]
 
@@ -346,16 +363,16 @@ def administrar_chatbot(text,number, messageId, name):
         }
         try:
             response = requests.post(api_url, data=json_data, headers=headers)
-            data = text_Message(number,"Veuillez commencer votre message par Tom : ou Jerry : pour designer le robot")
-            decode_and_show(response.text)
-            image = image_Message(number)
+            data = text_Message(number,"Veuillez commencer votre message par Tom : ou Jerry : pour designer le bot")
+            image_uri = decode_and_show(response.text, path)
+            image = image_Message(number,image_uri)
             list.append(image)
 
         except requests.exceptions.RequestException as e:
             # Gérer les erreurs de requête
             print(f"Une erreur de requête s'est produite : {str(e)}")
     else :
-        data = text_Message(number,"Veuillez commencer votre message par Tom : ou Jerry : pour designer le robot")
+        data = text_Message(number,"Veuillez commencer votre message par Tom : ou Jerry : pour designer le bot")
         list.append(data)
 
     for item in list:
