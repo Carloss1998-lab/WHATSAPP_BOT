@@ -7,7 +7,7 @@ GENERATED_FILES_FOLDER = 'generated_files'
 app.config['GENERATED_FILES_FOLDER'] = GENERATED_FILES_FOLDER
 app.config['SERVER_NAME'] = 'botsimple-carloss1998-lab.vercel.app'
 # app.config['SERVER_NAME'] = '127.0.0.1:5000'
-# app.config['FORCE_HTTPS'] = True
+app.config['FORCE_HTTPS'] = True
 @app.route('/')
 def  home():
     return 'Hello everyone'
