@@ -24,6 +24,7 @@ def obtener_Mensaje_whatsapp(message):
     return text
 
 def enviar_Mensaje_whatsapp(data):
+    print("Envoie du message")
     try:
         whatsapp_token = sett.whatsapp_token
         whatsapp_url = sett.whatsapp_url
@@ -34,11 +35,14 @@ def enviar_Mensaje_whatsapp(data):
                                  headers=headers, 
                                  data=data)
         
+        print("response.status_coderesponse.status_coderesponse.status_coderesponse.status_code")
+        print(response.status_code)
         if response.status_code == 200:
             return 'mensaje enviado', 200
         else:
             return 'error al enviar mensaje', response.status_code
     except Exception as e:
+        print("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
         return e,403
     
 def text_Message(number,text):
@@ -214,79 +218,78 @@ def markRead_Message(messageId):
 def administrar_chatbot(text,number, messageId, name):
     text = text.lower() #mensaje que envio el usuario
     list = []
-    print("mensaje del usuario: ",text)
-
     markRead = markRead_Message(messageId)
     list.append(markRead)
     time.sleep(2)
-
-    if "hola" in text:
-        body = "¡Hola! 👋 Bienvenido a Bigdateros. ¿Cómo podemos ayudarte hoy?"
-        footer = "Equipo Bigdateros"
-        options = ["✅ servicios", "📅 agendar cita"]
+    
+    print("texttexttexttext")
+    print(text)
+    print("Tom" in text)
+    if "hola" in text or "model" in text or "hello" in text or "bonjour" in text or "bonsoir" in text:
+        body = "Bonjour! 👋 Veuillez choisi une option?"
+        footer = "Reply Bot"
+        options = ["✅ Nos services", "📅 Contact"]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed1",messageId)
         replyReaction = replyReaction_Message(number, messageId, "🫡")
         list.append(replyReaction)
         list.append(replyButtonData)
-    elif "servicios" in text:
-        body = "Tenemos varias áreas de consulta para elegir. ¿Cuál de estos servicios te gustaría explorar?"
-        footer = "Equipo Bigdateros"
-        options = ["Analítica Avanzada", "Migración Cloud", "Inteligencia de Negocio"]
+    elif "services" in text:
+        body = "Voici nos services?"
+        footer = "Reply Bot"
+        options = ["Generation de texte (Tom)", "Generation d'image (Jerry)"]
 
         listReplyData = listReply_Message(number, options, body, footer, "sed2",messageId)
         sticker = sticker_Message(number, get_media_id("perro_traje", "sticker"))
 
         list.append(listReplyData)
         list.append(sticker)
-    elif "inteligencia de negocio" in text:
-        body = "Buenísima elección. ¿Te gustaría que te enviara un documento PDF con una introducción a nuestros métodos de Inteligencia de Negocio?"
-        footer = "Equipo Bigdateros"
-        options = ["✅ Sí, envía el PDF.", "⛔ No, gracias"]
-
+    elif "generation de texte" in text:
+        body = "Bonjour. Je suis le robot Tom, que puis-je pour vous?"
+        footer = "Reply Bot"
+        options = ["✅ Tom : Ecris une lettre de demande d'emploi."]
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed3",messageId)
         list.append(replyButtonData)
-    elif "sí, envía el pdf" in text:
-        sticker = sticker_Message(number, get_media_id("pelfet", "sticker"))
-        textMessage = text_Message(number,"Genial, por favor espera un momento.")
-
-        enviar_Mensaje_whatsapp(sticker)
-        enviar_Mensaje_whatsapp(textMessage)
-        time.sleep(3)
-
-        document = document_Message(number, sett.document_url, "Listo 👍🏻", "Inteligencia de Negocio.pdf")
-        enviar_Mensaje_whatsapp(document)
-        time.sleep(3)
-
-        body = "¿Te gustaría programar una reunión con uno de nuestros especialistas para discutir estos servicios más a fondo?"
-        footer = "Equipo Bigdateros"
-        options = ["✅ Sí, agenda reunión", "No, gracias." ]
+    elif "generation d'image" in text:
+        body = "Bonjour. Je suis le robot Jerry, que puis-je pour vous?"
+        footer = "Reply Bot"
+        options = ["✅ Jerry : Draw a boys."]
 
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed4",messageId)
-        list.append(replyButtonData)
-    elif "sí, agenda reunión" in text :
-        body = "Estupendo. Por favor, selecciona una fecha y hora para la reunión:"
-        footer = "Equipo Bigdateros"
-        options = ["📅 10: mañana 10:00 AM", "📅 7 de junio, 2:00 PM", "📅 8 de junio, 4:00 PM"]
+        list.append(replyButtonData) 
+    elif "tom" in text:
+        
+        print("allllllllllllllllllllllllllllllllllllll")
+        # L'URL de l'API que vous souhaitez interroger
+        api_url = sett.model_api_url
 
-        listReply = listReply_Message(number, options, body, footer, "sed5",messageId)
-        list.append(listReply)
-    elif "7 de junio, 2:00 pm" in text:
-        body = "Excelente, has seleccionado la reunión para el 7 de junio a las 2:00 PM. Te enviaré un recordatorio un día antes. ¿Necesitas ayuda con algo más hoy?"
-        footer = "Equipo Bigdateros"
-        options = ["✅ Sí, por favor", "❌ No, gracias."]
+        data = {
+            "system": "you're a conversational agent, give quick and clear answers to any questions you may have. Answer in the same language as the question.",
+            "user": text
+        }
+        # Convertir le dictionnaire en JSON
+        json_data = json.dumps(data)
 
+        # Entête (header) pour spécifier le type de contenu JSON
+        headers = {
+            "Content-Type": "application/json"
+        }
 
-        buttonReply = buttonReply_Message(number, options, body, footer, "sed6",messageId)
-        list.append(buttonReply)
-    elif "no, gracias." in text:
-        textMessage = text_Message(number,"Perfecto! No dudes en contactarnos si tienes más preguntas. Recuerda que también ofrecemos material gratuito para la comunidad. ¡Hasta luego! 😊")
-        list.append(textMessage)
+        # Effectuer la requête POST avec les données JSON
+        response = requests.post(api_url, data=json_data, headers=headers)
+        if response.status_code == 200:
+            print(response.json())
+            data = text_Message(number,response.json())
+            list.append(data)
+        else:
+            data = text_Message(number,response.status_code)
+            list.append(data)                    
     else :
-        data = text_Message(number,"Lo siento, no entendí lo que dijiste. ¿Quieres que te ayude con alguna de estas opciones?")
+        data = text_Message(number,"Veuillez commencer votre message par Tom : ou Jerry : pour designer le robot")
         list.append(data)
 
     for item in list:
+        print(item)
         enviar_Mensaje_whatsapp(item)
 
 #al parecer para mexico, whatsapp agrega 521 como prefijo en lugar de 52,

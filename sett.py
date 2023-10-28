@@ -1,8 +1,10 @@
 token = 'replybot'
 
-whatsapp_token = 'EAAEpadzUgZCkBO0gZAH4xFmbowmYgxKKqnS19tORv9f43CNlb8d3JzZA4C5cSedB2aZAIUZADOcFuoaTtlqAHETmrzSVAq2a13HojsyEv1Vwy2zUhvCAF1deLhcrz4aX6ZAOIZCfsG3CNVmiJMAvdtO5e4zAM9tY6ZBA6Jm9sqajKw4if8lZASVzhvuZBjbpdhBqykJ7ioLe7NA1pN01bpsPxb91GcwF1r5IutaxLZAZAhgZD'
+whatsapp_token = 'vvvvvEAAEpadzUgZCkBO7uqH0bnei4WKaHBuIpEAJByQlbGLjf5o71pPjZA7EqHHkc203YIJ76nZBCHfmLHZAC5E4ZAd0tLWQyzffLvSndSvIZCzy5LIAn3uytqZCZAndvhLcZAmV4EnnRWbGOERbRNGDovO3G7dpZBMwwgHVu1Og74c00ivvwat7maaswyLEfEdmz66eujtjOZAV32ovHbyyem3sjYlZC6vYBDNZA8sZBGxqLDpnGQZD'
+
 whatsapp_url = 'https://graph.facebook.com/v17.0/156524200875526/messages'
 
+model_api_url = 'api_url'
 
 stickers = {
     "poyo_feliz": 984778742532668,

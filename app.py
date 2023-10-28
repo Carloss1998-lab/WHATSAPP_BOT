@@ -25,6 +25,7 @@ def verificar_token():
 def recibir_mensajes():
     try:
         body = request.get_json()
+        print(body)
         entry = body['entry'][0]
         changes = entry['changes'][0]
         value = changes['value']
@@ -35,7 +36,10 @@ def recibir_mensajes():
         name = contacts['profile']['name']
         text = services.obtener_Mensaje_whatsapp(message)
 
+        print("text")
+        print(text)
         services.administrar_chatbot(text, number,messageId,name)
+        print("voila")
         return 'enviado'
 
     except Exception as e:
