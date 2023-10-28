@@ -225,6 +225,7 @@ def administrar_chatbot(text,number, messageId, name):
     print("texttexttexttext")
     print(text)
     print("Tom" in text)
+    print("service" in text)
     if "hola" in text or "model" in text or "hello" in text or "bonjour" in text or "bonsoir" in text:
         body = "Bonjour! 👋 Veuillez choisi une option?"
         footer = "Reply Bot"
@@ -234,23 +235,24 @@ def administrar_chatbot(text,number, messageId, name):
         replyReaction = replyReaction_Message(number, messageId, "🫡")
         list.append(replyReaction)
         list.append(replyButtonData)
-    elif "services" in text:
+    elif "service" in text:
         body = "Voici nos services?"
         footer = "Reply Bot"
         options = ["Generation de texte (Tom)", "Generation d'image (Jerry)"]
-
+        
+        print("cooll")
         listReplyData = listReply_Message(number, options, body, footer, "sed2",messageId)
         sticker = sticker_Message(number, get_media_id("perro_traje", "sticker"))
-
+        print("toppppppppppppppppppppp")
         list.append(listReplyData)
         list.append(sticker)
-    elif "generation de texte" in text:
+    elif "texte" in text:
         body = "Bonjour. Je suis le robot Tom, que puis-je pour vous?"
         footer = "Reply Bot"
         options = ["✅ Tom : Ecris une lettre de demande d'emploi."]
         replyButtonData = buttonReply_Message(number, options, body, footer, "sed3",messageId)
         list.append(replyButtonData)
-    elif "generation d'image" in text:
+    elif "image" in text:
         body = "Bonjour. Je suis le robot Jerry, que puis-je pour vous?"
         footer = "Reply Bot"
         options = ["✅ Jerry : Draw a boys."]
