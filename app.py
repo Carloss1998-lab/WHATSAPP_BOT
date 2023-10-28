@@ -6,8 +6,7 @@ app = Flask(__name__)
 @app.route('/bienvenido', methods=['GET'])
 def  bienvenido():
     return url_for('static', filename='Image/image.jpg')
-# os.path.join('static/Image/image.jpg')
-# url_for('static', filename='/Image/image.jpg')
+
 
 @app.route('/webhook', methods=['GET'])
 def verificar_token():

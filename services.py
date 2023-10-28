@@ -9,7 +9,7 @@ from PIL import Image
 def decode_and_show(image):
     image_data = base64.b64decode(image.encode())
     image = Image.open(io.BytesIO(image_data))
-    image.save("./static/Image/image.jpg")
+    image.save(url_for('static', filename='Image/image.jpg'))
     # display(image)
     
 def obtener_Mensaje_whatsapp(message):
@@ -148,10 +148,10 @@ def listReply_Message(number, options, body, footer, sedd,messageId):
                     "text": footer
                 },
                 "action": {
-                    "button": "Ver Opciones",
+                    "button": "Voir les options",
                     "sections": [
                         {
-                            "title": "Secciones",
+                            "title": "section",
                             "rows": rows
                         }
                     ]
@@ -191,7 +191,7 @@ def sticker_Message(number, sticker_id):
     )
     return data
 
-def image_Message(number, image_id):
+def image_Message(number):
     data = json.dumps(
         {
             "messaging_product": "whatsapp",
@@ -199,10 +199,11 @@ def image_Message(number, image_id):
             "to": number,
             "type": "image",
             "image": {
-                "id": "image_id"  
+                  "link": 'https://botsimple.vercel.app/static/Image/image.jpg'
             }
         }
     )
+    # https://botsimple.vercel.app/static/Image/image.jpg
     return data
 
 
@@ -286,7 +287,7 @@ def administrar_chatbot(text,number, messageId, name):
     elif "service" in text:
         body = "Voici nos services?"
         footer = "Reply Bot"
-        options = ["Generation de texte, Tom", "Generation d'image, Jerry","Bedrock, pas disponible"]
+        options = ["Generation de texte", "Generation d'image", "Bedrock, pas disponible"]
         
         listReplyData = listReply_Message(number, options, body, footer, "sed9",messageId)
         sticker = sticker_Message(number, get_media_id("perro_traje", "sticker"))
@@ -294,9 +295,10 @@ def administrar_chatbot(text,number, messageId, name):
         list.append(listReplyData)
         list.append(sticker) 
     elif "generation de texte" in text:
+        print("allllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll")
         body = "Bonjour. Je suis le robot Tom, que puis-je pour vous?"
         footer = "Reply Bot"
-        options = ["Tom : c'est quoi la carte verte ?","Tom : C'est quoi la capital de la France."," Tom : C'est qui Emanuel Macron."]
+        options = ["Tom, what's a green card","Tom, capital France","Tom, What is AI"]
 
         listReplyData = listReply_Message(number, options, body, footer, "sed10",messageId)
         sticker = sticker_Message(number, get_media_id("perro_traje", "sticker"))
@@ -306,7 +308,7 @@ def administrar_chatbot(text,number, messageId, name):
     elif "generation d'image" in text:
         body = "Bonjour. Je suis le robot Tom, que puis-je pour vous?"
         footer = "Reply Bot"
-        options = ["Jerry : Draw a boys","Jerry : engineers eating lunch at the opera","Jerry : panda eating bamboo on a plane"]
+        options = ["Jerry, Draw a boys","Jerry, a computer","Jerry, panda eating"]
 
         listReplyData = listReply_Message(number, options, body, footer, "sed14",messageId)
         sticker = sticker_Message(number, get_media_id("perro_traje", "sticker"))
@@ -334,7 +336,7 @@ def administrar_chatbot(text,number, messageId, name):
             list.append(data)
     elif "jerry" in text:
         # L'URL de l'API Gateway
-        api_url =  stable_api_url
+        api_url =  sett.stable_api_url
         data = {
             "prompt": text.replace("jerry", "").replace(':',"")
         }
@@ -345,7 +347,10 @@ def administrar_chatbot(text,number, messageId, name):
         try:
             response = requests.post(api_url, data=json_data, headers=headers)
             data = text_Message(number,"Veuillez commencer votre message par Tom : ou Jerry : pour designer le robot")
-            list.append(decode_and_show(response.text))
+            decode_and_show(response.text)
+            image = image_Message(number)
+            list.append(image)
+
         except requests.exceptions.RequestException as e:
             # Gérer les erreurs de requête
             print(f"Une erreur de requête s'est produite : {str(e)}")
