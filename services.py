@@ -9,7 +9,7 @@ from PIL import Image
 def decode_and_show(image):
     image_data = base64.b64decode(image.encode())
     image = Image.open(io.BytesIO(image_data))
-    image.save("./image.jpg")
+    image.save("./static/Image/image.jpg")
     # display(image)
     
 def obtener_Mensaje_whatsapp(message):
@@ -332,7 +332,7 @@ def administrar_chatbot(text,number, messageId, name):
         else:
             data = text_Message(number,response.status_code)
             list.append(data)
-    elif "jerry" in text::
+    elif "jerry" in text:
         # L'URL de l'API Gateway
         api_url =  stable_api_url
         data = {
