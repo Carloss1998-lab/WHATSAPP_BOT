@@ -204,6 +204,8 @@ def sticker_Message(number, sticker_id):
 def image_Message(number,image_uri):
     
     link = url_for('serve_generated_image', filename=image_uri, _external=True)
+    link = link.replace("http://", "https://")
+    
     print("linklinklinklinklink")
     print(link)
     data = json.dumps(
