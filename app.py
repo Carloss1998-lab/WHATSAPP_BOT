@@ -1,21 +1,12 @@
-from flask import Flask, request, url_for,send_from_directory
+from flask import Flask, request, url_for
 import sett 
 import services
 app = Flask(__name__)
 
-GENERATED_FILES_FOLDER = 'generated_files'
-app.config['GENERATED_FILES_FOLDER'] = GENERATED_FILES_FOLDER
-# app.config['SERVER_NAME'] = 'botsimple-carloss1998-lab.vercel.app'
-# app.config['SERVER_NAME'] = '127.0.0.1:5000'
-app.config['FORCE_HTTPS'] = True
-@app.route('/')
-def  home():
-    return 'Hello everyone'
-
-
 @app.route('/bienvenido', methods=['GET'])
 def  bienvenido():
-    return 'bonjour ici'
+    return url_for('static', filename='Image/image.jpg')
+
 
 @app.route('/webhook', methods=['GET'])
 def verificar_token():
@@ -44,16 +35,11 @@ def recibir_mensajes():
         contacts = value['contacts'][0]
         name = contacts['profile']['name']
         text = services.obtener_Mensaje_whatsapp(message)
-        services.administrar_chatbot(text, number,messageId,name,app.config['GENERATED_FILES_FOLDER'])
+        services.administrar_chatbot(text, number,messageId,name)
         return 'enviado'
 
     except Exception as e:
         return 'no enviado ' + str(e)
-
-
-@app.route('/<filename>')
-def serve_generated_image(filename):
-    return send_from_directory(app.config['GENERATED_FILES_FOLDER'], filename)
 
 if __name__ == '__main__':
     app.run()
