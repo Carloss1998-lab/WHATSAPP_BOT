@@ -355,9 +355,10 @@ def administrar_chatbot(text,number, messageId, name, path):
             data = text_Message(number,response.status_code)
             list.append(data)
     elif "jerry" in text:
-        api_url = sett.stable_api_url
+        api_url = sett.model_api_url
         data = {
-            "prompt": text.replace("jerry", "").replace(':',"")
+            "system": "you're a conversational agent, give quick and clear answers to any questions you may have. Answer in the same language as the question.",
+            "user": text.replace("jerry", "").replace(':',"")
         }
         json_data = json.dumps(data)
         headers = {
@@ -371,7 +372,6 @@ def administrar_chatbot(text,number, messageId, name, path):
         else:
             data = text_Message(number,response.status_code)
             list.append(data)
-            
     # elif "jerry" in text:
     #     # L'URL de l'API Gateway
     #     api_url =  sett.stable_api_url
