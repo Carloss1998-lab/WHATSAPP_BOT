@@ -356,7 +356,7 @@ def administrar_chatbot(text,number, messageId, name, path):
             list.append(data)
     elif "jerry" in text:
         # L'URL de l'API Gateway
-        api_url =  sett.stable_api_url
+        api_url =  sett.model_api_url
         print("api_url")
         print(api_url)
         data = {
