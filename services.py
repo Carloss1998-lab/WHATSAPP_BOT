@@ -19,7 +19,7 @@ def decode_and_show(image,path):
     image_url = f'/generated_files/{filename}'
     print("image_url")
     print(image_url)
-    return image_url
+    return filename
 
     
 def obtener_Mensaje_whatsapp(message):
