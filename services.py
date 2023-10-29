@@ -355,54 +355,35 @@ def administrar_chatbot(text,number, messageId, name, path):
             data = text_Message(number,response.status_code)
             list.append(data)
     elif "jerry" in text:
-        api_url = sett.model_api_url
+        # L'URL de l'API Gateway
+        api_url =  sett.stable_api_url
+        print("api_url")
+        print(api_url)
         data = {
-            "system": "you're a conversational agent, give quick and clear answers to any questions you may have. Answer in the same language as the question.",
-            "user": text.replace("jerry", "").replace(':',"")
+            "prompt": text.replace("jerry", "").replace(':',"").replace(',',"")
         }
+        print("okkk")
         json_data = json.dumps(data)
+        print("kllllllllllllllllll")
         headers = {
             "Content-Type": "application/json"
         }
         response = requests.post(api_url, data=json_data, headers=headers)
-        if response.status_code == 200:
-            print(response.json())
-            data = text_Message(number,response.json())
-            list.append(data)
-        else:
-            data = text_Message(number,response.status_code)
-            list.append(data)
-    # elif "jerry" in text:
-    #     # L'URL de l'API Gateway
-    #     api_url =  sett.stable_api_url
-    #     print("api_url")
-    #     print(api_url)
-    #     data = {
-    #         "prompt": text.replace("jerry", "").replace(':',"")
-    #     }
-    #     print("okkk")
-    #     json_data = json.dumps(data)
-    #     print("kllllllllllllllllll")
-    #     headers = {
-    #         "Content-Type": "application/json"
-    #     }
-    #     print("data")
-    #     print(data)
-    #     try:
-    #         print("checkkkkkkkkkkkkkkk")
-    #         response = requests.post(api_url, data=json_data, headers=headers)
-    #         print("toooooooooooooooooooooooooooo")
-    #         data = text_Message(number,"Veuillez commencer votre message par Tom : ou Jerry : pour designer le bot")
-    #         print("aaaaaaaaaaaaaaaaaa")
-    #         image_uri = decode_and_show(response.text, path)
-    #         print("bbbbbbbbbbbbbbbbbbbbbb")
-    #         image = image_Message(number,image_uri)
-    #         print("ccccccccccccccccccccccc")
-    #         list.append(image)
+        print("data")
+        print(data)
+        try:
+            print("checkkkkkkkkkkkkkkk")
+            # response = requests.post(api_url, data=json_data, headers=headers)
+            print("toooooooooooooooooooooooooooo")
+            image_uri = decode_and_show(response.text, path)
+            print("bbbbbbbbbbbbbbbbbbbbbb")
+            image = image_Message(number,image_uri)
+            print("ccccccccccccccccccccccc")
+            list.append(image)
 
-    #     except requests.exceptions.RequestException as e:
-    #         # Gérer les erreurs de requête
-    #         print(f"Une erreur de requête s'est produite : {str(e)}")
+        except requests.exceptions.RequestException as e:
+            # Gérer les erreurs de requête
+            print(f"Une erreur de requête s'est produite : {str(e)}")
     else :
         data = text_Message(number,"Veuillez commencer votre message par Tom : ou Jerry : pour designer le bot")
         list.append(data)
